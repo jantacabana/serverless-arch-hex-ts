@@ -1,0 +1,48 @@
+
+createEmpresa:
+  handler: src/empresa/infrastructure/App.handler
+  events:
+    - http:
+        path: empresa
+        method: post
+        integration: lambda
+        request:
+          template:
+            application/json: ${file(src/empresa/infrastructure/serverless/request/registrarEmpresa.vm)}
+        cors:
+          ${file(serverless/http-cors.yml)}
+  timeout: 15
+  environment:
+    AWS_DYNAMODB_EMPRESA: ${self:custom.awsDynamoEmpresaTable}
+
+getEmpresa:
+  handler: src/empresa/infrastructure/App.handler
+  events:
+    - http:
+        path: empresa/{id}
+        method: get
+        integration: lambda
+        request:
+          template:
+            application/json: ${file(src/empresa/infrastructure/serverless/request/consultarEmpresa.vm)}
+        cors:
+          ${file(serverless/http-cors.yml)}
+  timeout: 15
+  environment:
+    AWS_DYNAMODB_EMPRESA: ${self:custom.awsDynamoEmpresaTable}
+
+getAllEmpresas:
+  handler: src/empresa/infrastructure/App.handler
+  events:
+    - http:
+        path: empresa
+        method: get
+        integration: lambda
+        request:
+          template:
+            application/json: ${file(src/empresa/infrastructure/serverless/request/obtenerEmpresas.vm)}
+        cors:
+          ${file(serverless/http-cors.yml)}
+  timeout: 10
+  environment:
+    AWS_DYNAMODB_EMPRESA: ${self:custom.awsDynamoEmpresaTable}

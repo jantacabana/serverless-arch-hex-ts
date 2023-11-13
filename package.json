@@ -1,0 +1,54 @@
+{
+  "name": "serverless-softek-reto",
+  "version": "1.0.0",
+  "description": "Reto técnico basado en serverless con typescript - api rest",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "set IS_AUTH_IAM=true && serverless offline start --stage DESA",
+    "test": "jest --coverage",
+    "build": "./node_modules/typescript/bin/tsc",
+    "test-coverage": "jest --coverage",
+    "sls-deploy": "serverless deploy --stage DESA --region us-east-1"
+  },
+  "author": "JONATHAN ANTACABANA",
+  "license": "Jonathan Antacabana",
+  "devDependencies": {
+    "@types/jest": "27.0.3",
+    "@types/node": "11.13.0",
+    "@typescript-eslint/eslint-plugin": "5.6.0",
+    "@typescript-eslint/parser": "5.6.0",
+    "aws-sdk": "2.1259.0",
+    "eslint": "7.0.0",
+    "jest": "27.4.0",
+    "serverless": "2.63.0",
+    "serverless-esbuild": "1.19.0",
+    "serverless-offline": "5.12.0",
+    "ts-jest": "27.0.7",
+    "ts-node-dev": "1.1.8",
+    "typescript": "4.5.2"
+  },
+  "dependencies": {
+    "@middy/core": "3.1.0",
+    "@types/aws-lambda": "8.10.119",
+    "@types/jest": "^29.5.8",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.13.2",
+    "esbuild": "0.16.17",
+    "axios": "^1.6.1",
+    "joi": "^17.11.0",
+    "js-yaml": "3.14.1",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "7.5.6",
+    "uuid": "3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx jest"
+    }
+  }
+}

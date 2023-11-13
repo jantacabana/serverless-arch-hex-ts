@@ -1,0 +1,48 @@
+
+service: softekReto
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  # lambdaHashingVersion: 20201221
+  stage: ${opt:stage,'DESA'}
+  region: us-east-1
+  apiGateway:
+    shouldStartNameWithService: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:custom.awsDynamoEmpresaTable}"
+
+functions:
+  - ${file(src/vehiculo/infrastructure/serverless/functions.yml)}
+  - ${file(src/empresa/infrastructure/serverless/functions.yml)}
+
+resources:
+  - ${file(src/empresa/infrastructure/serverless/dynamodb-empresa.yml)}  
+
+plugins:
+  # - serverless-auto-swagger
+  - serverless-esbuild
+  - serverless-offline
+
+package:
+  individually: true
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: false
+  swapiVehiclesUrl: 'https://swapi.py4e.com/api/vehicles'
+  awsDynamoEmpresaTable: SOF_${opt:stage}_EMPRESA
+
+  # autoswagger:
+  #   title: 'Reto técnico SOFTEK'
+  #   generateSwaggerOnDeploy: true
+  #   typefiles: ['./src/empresa/application/dto/EmpresaRequest.ts']
+  #   apiType: http

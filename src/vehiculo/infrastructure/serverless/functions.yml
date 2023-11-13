@@ -1,0 +1,33 @@
+
+getVehiculo:
+  handler: src/vehiculo/infrastructure/App.handler
+  events:
+    - http:
+        path: vehiculo/{id}
+        method: get
+        integration: lambda
+        request:
+          template:
+            application/json: ${file(src/vehiculo/infrastructure/serverless/request/consultarVehiculo.vm)}
+        cors:
+          ${file(serverless/http-cors.yml)}
+            # bodyType: VehiculoRes
+  environment:
+    API_ENDPOINT: ${self:custom.swapiVehiclesUrl}
+
+getAllVehiculos:
+  handler: src/vehiculo/infrastructure/App.handler
+  events:
+    - http:
+        path: vehiculo
+        method: get
+        integration: lambda
+        request:
+          template:
+            application/json: ${file(src/vehiculo/infrastructure/serverless/request/obtenerVehiculos.vm)}
+        cors:
+          ${file(serverless/http-cors.yml)}
+            # bodyType: 'Vehiculos'
+  environment:
+    API_ENDPOINT: ${self:custom.swapiVehiclesUrl}
+  timeout: 15
